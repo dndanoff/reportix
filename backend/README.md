@@ -3,4 +3,4 @@
 # Tech stack
 - DynamoDB
 - Nodejs
-- Reactjs
+- Expressjs

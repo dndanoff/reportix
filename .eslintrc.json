@@ -1,0 +1,49 @@
+{
+    "root": true,
+    "parserOptions": {
+        "ecmaVersion": 2022,
+        "sourceType": "module"
+    },
+    "env": {
+        "es6": true,
+        "node": true,
+        "es2022": true,
+        "jest/globals": true
+    },
+    "extends": [
+        "airbnb-base",
+        "plugin:jest/recommended",
+        "plugin:prettier/recommended",
+        "plugin:import/recommended"
+    ],
+    "plugins": ["jest", "prettier", "import"],
+    "rules": {
+        // Variables and functions must have only ASCII characters so that we avoid problems with Cyrillic characters
+        "id-match": ["error", "^[_a-zA-Z0-9]+$"],
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "import/no-cycle": "error",
+        "import/prefer-default-export": "off",
+        "import/extensions": ["error", "always"],
+        "import/no-extraneous-dependencies": [
+            "error",
+            { "devDependencies": ["**/*.test.js", "**/tests/**/*.js"] }
+        ],
+        "no-plusplus": "off",
+        "no-await-in-loop": "off",
+        "no-restricted-syntax": "off",
+        // Allow Entity.__props
+        "no-underscore-dangle": ["error", { "allow": ["__props"] }],
+        "no-negated-condition": "error",
+        "no-console": "error",
+        "curly": ["error", "all"],
+        "class-methods-use-this": "error",
+        "lines-between-class-members": [
+            "error",
+            "always",
+            { "exceptAfterSingleLine": true }
+        ],
+        "arrow-body-style": ["error", "as-needed"],
+        "jest/no-alias-methods": "error",
+        "jest/expect-expect": "error"
+    }
+}

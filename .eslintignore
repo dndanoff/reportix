@@ -1,0 +1,6 @@
+node_modules
+dist
+.vscode
+
+# Do net check files that are ignored for git. Useful for small tests.
+*.no-git.*

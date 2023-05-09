@@ -1,0 +1,20 @@
+[*]
+quote_type = single
+end_of_line = lf
+insert_final_newline = true
+indent_size = 4
+indent_style = space
+charset = utf-8
+trim_trailing_whitespace = true
+
+[{*.yaml,*.yml,*.yaml.j2,*.yml.j2}]
+indent_size = 2
+
+[{package.json}]
+indent_size = 2
+
+[*.tf]
+indent_size = 2
+
+[*.bat]
+end_of_line = crlf
