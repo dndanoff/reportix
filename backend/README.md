@@ -4,3 +4,7 @@
 - DynamoDB
 - Nodejs
 - Expressjs
+
+# TODO
+- Add pagination
+- Abstract a general purpose search method

@@ -49,23 +49,21 @@ export class DbClient {
         return data.Items ?? [];
     }
 
-    async getById({ tableName, pk }) {
+    async getById({ tableName, pkName, pkValue }) {
         const params = {
             TableName: tableName,
             Key: {
-                primaryKey: pk,
+                [pkName]: pkValue,
             },
         };
-        const data = this.#client.send(new GetCommand(params));
-
+        const data = await this.#client.send(new GetCommand(params));
         return data.Item;
     }
 
-    async create({ tableName, item, pkName }) {
-        const { [pkName]: id, ...attributes } = { ...item };
+    async create({ tableName, item }) {
         const params = {
             TableName: tableName,
-            Item: { primaryKey: id, ...attributes },
+            Item: { ...item },
         };
         return this.#client.send(new PutCommand(params));
     }
@@ -92,7 +90,7 @@ export class DbClient {
                 {}
             ),
             Key: {
-                primaryKey: item[pkName],
+                [pkName]: item[pkName],
             },
             ReturnValues: 'ALL_NEW',
         };

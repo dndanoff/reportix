@@ -10,10 +10,10 @@ export class GetRelatedContentLinks {
     }
 
     async execute(recipientInput) {
-        const { recipient } =
+        const recipient =
             await GetRelatedContentLinks.#VALIDATION_SCHEMA.validate(
                 recipientInput
             );
-        return this.#contentLinkRepo.getById(validatedId);
+        return this.#contentLinkRepo.getByRecipient(recipient);
     }
 }

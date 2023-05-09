@@ -7,33 +7,243 @@
 	},
 	"item": [
 		{
-			"name": "Login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "private-api",
+			"item": [
+				{
+					"name": "CreateLink",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcmluY2lwbGUiOnsidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOnsiaWQiOjEsIm5hbWUiOiJhZG1pbiIsInBlcm1pc3Npb25zIjpbImxpbmtzLnJlYWQiLCJsaW5rcy51cGRhdGUiXX19LCJpYXQiOjE2ODM2NDAzNDIsImV4cCI6MTY4MzY0MDQ2Mn0.0HPsAHlsTIbHtrqN41C8JIKMyE0QQM1hPtH_6qthDVA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Q1 2023 report\",\r\n    \"company\": \"Cpmpany 1\",\r\n    \"recipient\": \"admin@company1.com\",\r\n    \"sourceUrl\": \"http://google.com\",\r\n    \"redirect\": false,\r\n    \"expireAfter\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/private/content-links",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"private",
+								"content-links"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3001/api/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"api",
-						"login"
-					]
+				{
+					"name": "DuplicateLink",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcmluY2lwbGUiOnsidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOnsiaWQiOjEsIm5hbWUiOiJhZG1pbiIsInBlcm1pc3Npb25zIjpbImxpbmtzLnJlYWQiLCJsaW5rcy51cGRhdGUiXX19LCJpYXQiOjE2ODM2NDM3MDMsImV4cCI6MTY4MzY0MzgyM30.navC7gAR-txJ-GAkURSxpjiOpui-8vbptlXP98KnE28",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"operation\": \"duplicate\",\r\n    \"params\": {\r\n        \"id\": \"16105d27-ee6c-41e4-a46d-5dbc333def7e\",\r\n        \"recipient\": \"admin@company1.com\",\r\n        \"expireAfter\": 5\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/private/content-links/operations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"private",
+								"content-links",
+								"operations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateLink",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcmluY2lwbGUiOnsidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOnsiaWQiOjEsIm5hbWUiOiJhZG1pbiIsInBlcm1pc3Npb25zIjpbImxpbmtzLnJlYWQiLCJsaW5rcy51cGRhdGUiXX19LCJpYXQiOjE2ODM2NDMyMTUsImV4cCI6MTY4MzY0MzMzNX0.CoOCavBERybp7SgdBOcy3k6eps7TgvtL3QcuQzS4Ldc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Q1 2023 report\",\r\n    \"company\": \"Cpmpany 2\",\r\n    \"recipient\": \"admin@company1.com\",\r\n    \"sourceUrl\": \"http://google.com\",\r\n    \"redirect\": false,\r\n    \"expireAfter\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/private/content-links/16105d27-ee6c-41e4-a46d-5dbc333def7e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"private",
+								"content-links",
+								"16105d27-ee6c-41e4-a46d-5dbc333def7e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllContentLinks",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcmluY2lwbGUiOnsidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOnsiaWQiOjEsIm5hbWUiOiJhZG1pbiIsInBlcm1pc3Npb25zIjpbImxpbmtzLnJlYWQiLCJsaW5rcy51cGRhdGUiXX19LCJpYXQiOjE2ODM2NDIxNzQsImV4cCI6MTY4MzY0MjI5NH0.uwMtR6sGXHf4gCIWMkVSFBkfHr8PKt3EnUzQ8tNTFn8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/private/content-links",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"private",
+								"content-links"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "public-api",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetContentLink",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/content-links/16105d27-ee6c-41e4-a46d-5dbc333def7e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"content-links",
+								"16105d27-ee6c-41e4-a46d-5dbc333def7e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetRelatedLinks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/related-content-links?recipient=YWRtaW5AY29tcGFueTEuY29t",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"related-content-links"
+							],
+							"query": [
+								{
+									"key": "recipient",
+									"value": "YWRtaW5AY29tcGFueTEuY29t"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

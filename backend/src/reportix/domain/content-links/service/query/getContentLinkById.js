@@ -10,7 +10,7 @@ export class GetContentLinkById {
     }
 
     async execute(id) {
-        const { validatedId } =
+        const validatedId =
             await GetContentLinkById.#VALIDATION_SCHEMA.validate(id);
         return this.#contentLinkRepo.getById(validatedId);
     }

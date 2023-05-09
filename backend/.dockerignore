@@ -1,6 +1,7 @@
 **/.vscode
 **/logs
 **/node_modules
+scripts
 jest.config.js
 **/tests
 **/__tests__

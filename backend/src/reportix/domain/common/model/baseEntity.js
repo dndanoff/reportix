@@ -8,7 +8,7 @@ export class BaseEntity {
     );
 
     #id;
-    _props;
+    props;
 
     constructor(id, props) {
         if (this.constructor === BaseEntity) {
@@ -16,7 +16,7 @@ export class BaseEntity {
         }
         BaseEntity.#VALIDATION_SCHEMA.validateSync(id);
         this.#id = id;
-        this._props = { ...props };
+        this.props = { ...props };
     }
 
     isNew() {
@@ -28,10 +28,10 @@ export class BaseEntity {
     }
 
     toDto() {
-        return { id: this.#id, ..._props };
+        return { id: this.#id, ...this.props };
     }
 
     get _props() {
-        return { ..._props };
+        return { ...this.props };
     }
 }

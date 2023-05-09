@@ -27,7 +27,7 @@ const start = async () => {
     });
 };
 
-start().catch((e) => {
-    logger.error(e);
+start().catch((err) => {
+    logger.error({ msg: 'Error while server is running. Shutting down.', err });
     process.exit(1);
 });

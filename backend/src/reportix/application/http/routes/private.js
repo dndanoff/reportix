@@ -27,10 +27,7 @@ export const createPrivateRouter = () => {
     /*
     POST /content-links
     */
-    privateRouter.post(
-        '/content-links/',
-        asyncHandler(handleCreateContentLink)
-    );
+    privateRouter.post('/content-links', asyncHandler(handleCreateContentLink));
 
     /*
     PUT /content-links/:id
@@ -45,7 +42,7 @@ export const createPrivateRouter = () => {
     POST /content-links/operations
     required fields: operation, params
     */
-    privateRouter.put(
+    privateRouter.post(
         '/content-links/operations',
         asyncHandler(handleContentLinkOperation)
     );

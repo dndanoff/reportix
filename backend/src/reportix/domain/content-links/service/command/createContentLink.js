@@ -22,7 +22,7 @@ export class CreateContentLink {
         const valdiatedParams =
             await CreateContentLink.#VALIDATION_SCHEMA.validate(
                 contentLinkInputParams,
-                { abortEarly: false }
+                { abortEarly: false, stripUnknown: true }
             );
 
         const contentLink = ContentLink.createNew({

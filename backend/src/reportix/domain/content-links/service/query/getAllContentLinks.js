@@ -6,6 +6,6 @@ export class GetAllContentLinks {
     }
 
     async execute() {
-        return this.#contentLinkRepo.getAll(validatedId);
+        return this.#contentLinkRepo.getAll();
     }
 }

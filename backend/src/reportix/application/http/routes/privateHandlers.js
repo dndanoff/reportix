@@ -1,6 +1,7 @@
 import { UnknownOperation } from '../errors.js';
 
 export const handleGetAllContentLinks = async (_req, res) => {
+    const { container, logger } = res.locals.context;
     logger.info({ msg: 'Calling GetAllContentLinks' });
     const { getAllContentLinks } = container;
 
@@ -11,9 +12,7 @@ export const handleGetAllContentLinks = async (_req, res) => {
     });
 
     res.status(200).send(
-        allLinks.map((l) => {
-            return { ...l.toDto(), expired: l.isExpired() };
-        })
+        allLinks.map((l) => ({ ...l.toJSON(), expired: l.isExpired() }))
     );
 };
 
@@ -29,12 +28,12 @@ export const handleCreateContentLink = async (req, res) => {
         contentLink,
     });
 
-    res.status(201).send(contentLink);
+    res.status(201).send(contentLink.toJSON());
 };
 
 export const handleUpdateContentLink = async (req, res) => {
     const { container, logger } = res.locals.context;
-    const params = { ...req.body };
+    const params = { ...req.body, id: req.params.id };
     logger.info({ msg: 'Calling UpdateContentLink' }, params);
     const { updateContentLink } = container;
 
@@ -44,13 +43,13 @@ export const handleUpdateContentLink = async (req, res) => {
         contentLink,
     });
 
-    res.status(200).send(contentLink);
+    res.status(200).send(contentLink.toJSON());
 };
 
 export const handleContentLinkOperation = async (req, res) => {
     const { container, logger } = res.locals.context;
     const { operation, params } = req.body;
-    if ('duplicate' === operation) {
+    if (operation === 'duplicate') {
         logger.info({ msg: 'Calling DuplicateContentLink' }, params);
         const { duplicateContentLink } = container;
 
@@ -60,7 +59,7 @@ export const handleContentLinkOperation = async (req, res) => {
             contentLink,
         });
 
-        res.status(201).send(contentLink);
+        res.status(201).send(contentLink.toJSON());
     } else {
         throw new UnknownOperation(`Unknown operation: ${operation}`);
     }

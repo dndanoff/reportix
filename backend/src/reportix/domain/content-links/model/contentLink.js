@@ -1,4 +1,5 @@
-import { object, string, date, number, bool } from 'yup';
+/* eslint-disable no-underscore-dangle */
+import { object, string, number, bool } from 'yup';
 import { BaseEntity, NEW_ID } from '../../common/model/baseEntity.js';
 
 export class ContentLink extends BaseEntity {
@@ -13,8 +14,8 @@ export class ContentLink extends BaseEntity {
         recipient: string().trim().email().required(),
         expireAfter: number().default(-1),
         redirect: bool().default(false),
-        createdAt: date().required(),
-        updatedAt: date().required(),
+        createdAt: number().required(),
+        updatedAt: number().required(),
     });
 
     constructor(id, props) {
@@ -35,7 +36,7 @@ export class ContentLink extends BaseEntity {
     }
 
     static createNew(props) {
-        const currentDate = new Date();
+        const currentDate = new Date().getTime();
         const actualProps = {
             ...props,
             createdAt: currentDate,
@@ -49,11 +50,14 @@ export class ContentLink extends BaseEntity {
             props,
             {
                 abortEarly: false,
+                stripUnknown: true,
             }
         );
 
         ContentLink.#isInternalConstructing = true;
-        const instance = new ContentLink(id, validatedProps);
+        const instance = new ContentLink(id, {
+            ...validatedProps,
+        });
         ContentLink.#isInternalConstructing = false;
         return instance;
     }
@@ -79,11 +83,11 @@ export class ContentLink extends BaseEntity {
     }
 
     getCreatedAt() {
-        return this._props.createdAt;
+        return new Date(this._props.createdAt);
     }
 
     getUpdatedAt() {
-        return this._props.updatedAt;
+        return new Date(this._props.updatedAt);
     }
 
     isRedirect() {
@@ -91,14 +95,19 @@ export class ContentLink extends BaseEntity {
     }
 
     isExpired() {
-        const currentDate = new Date();
+        const currentDate = new Date().getTime();
         return (
-            this._props.createdAt + this._props.expireAfter * ONE_DAY >
+            this._props.createdAt +
+                this._props.expireAfter * ContentLink.ONE_DAY <
             currentDate
         );
     }
 
     toJSON() {
-        return this.toDto();
+        return {
+            ...this.toDto(),
+            createdAt: this.getCreatedAt(),
+            updatedAt: this.getUpdatedAt(),
+        };
     }
 }

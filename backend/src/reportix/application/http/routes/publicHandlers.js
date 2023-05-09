@@ -20,10 +20,10 @@ export const handleGetContentLinkById = async (req, res) => {
         res.redirect(contentLink.getSourceUrl());
     } else {
         const dto = {
-            ...contentLink.toDto(),
+            ...contentLink.toJSON(),
             expired: false,
             moreContent: `/related-content-links?recipient=${Buffer.from(
-                data
+                contentLink.getRecipient()
             ).toString('base64')}`,
         };
         if (contentLink.isExpired()) {
@@ -35,7 +35,7 @@ export const handleGetContentLinkById = async (req, res) => {
 };
 
 export const handleGetRelatedContentLinks = async (req, res) => {
-    const { recipientBase64 } = req.query;
+    const { recipient: recipientBase64 } = req.query;
     const { container, logger } = res.locals.context;
     logger.info({ msg: 'Calling GetRelatedContentLinks', recipientBase64 });
     const recipient = Buffer.from(recipientBase64 ?? '', 'base64').toString();
@@ -48,13 +48,11 @@ export const handleGetRelatedContentLinks = async (req, res) => {
     res.status(200).send(
         contentLinks
             .filter((l) => !l.isExpired())
-            .map((l) => {
-                return {
-                    id: l.getId(),
-                    sourceUrl: l.getSourceUrl(),
-                    name: l.getName(),
-                };
-            })
+            .map((l) => ({
+                id: l.getId(),
+                sourceUrl: l.getSourceUrl(),
+                name: l.getName(),
+            }))
     );
 };
 

@@ -7,7 +7,7 @@ export class ApiError {
         message = 'Unexpected internal server error.',
         statusCode = 500,
         details = undefined,
-    }) {
+    } = {}) {
         this.#statusCode = statusCode;
         this.#message = message;
         this.#details = details;

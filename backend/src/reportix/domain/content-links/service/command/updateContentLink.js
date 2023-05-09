@@ -22,16 +22,16 @@ export class UpdateContentLink {
         const validatedParams =
             await UpdateContentLink.#VALIDATION_SCHEMA.validate(
                 contentLinkInputParams,
-                { abortEarly: false }
+                { abortEarly: false, stripUnknown: true }
             );
 
-        const existingContentLink = this.#contentLinkRepo.getById(
+        const existingContentLink = await this.#contentLinkRepo.getById(
             validatedParams.id
         );
 
         const contentLink = ContentLink.copy(existingContentLink, {
             ...validatedParams,
-            updatedAt: new Date(),
+            updatedAt: new Date().getTime(),
         });
 
         return this.#contentLinkRepo.save(contentLink);
