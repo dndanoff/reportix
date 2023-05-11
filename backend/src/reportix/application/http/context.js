@@ -2,8 +2,8 @@ import asyncHandler from 'express-async-handler';
 import { v4 as uuid } from 'uuid';
 
 import { logger } from '../../logger.js';
-import { ContentLinkRepo } from '../content-links/repository/aws/contentLinkRepo.js';
-import { DbClient } from '../common/repository/aws/dbClient.js';
+import { ContentLinkRepo } from '../domain/content-links/repository/aws/contentLinkRepo.js';
+import { DbClient } from '../domain/common/repository/aws/dbClient.js';
 import { GetContentLinkById } from '../../domain/content-links/service/query/getContentLinkById.js';
 import { CreateContentLink } from '../../domain/content-links/service/command/createContentLink.js';
 import { UpdateContentLink } from '../../domain/content-links/service/command/updateContentLink.js';
@@ -13,11 +13,18 @@ import { verifyToken } from './auth/jwt.js';
 import { GetRelatedContentLinks } from '../../domain/content-links/service/query/getRelatedContentLinks.js';
 import { UserPrinciple } from './auth/userPrinciple.js';
 import { Roles } from './auth/role.js';
+import { GetLinkEventsByContentLink } from '../../domain/link-events/service/query/getByContentLink.js';
+import { LinkEventRepo } from '../domain/link-events/repository/aws/linkEventRepo.js';
+import { CreateLinkEvent } from '../../domain/link-events/service/command/createLinkEvent.js';
 
 const createContainer = () => {
     const dbClient = new DbClient();
     const contentLinkRepo = new ContentLinkRepo(dbClient);
-    const getContentLinkById = new GetContentLinkById({ contentLinkRepo });
+    const linkEventRepo = new LinkEventRepo(dbClient);
+    const getContentLinkById = new GetContentLinkById({
+        contentLinkRepo,
+        createLinkEventService: new CreateLinkEvent({ linkEventRepo }),
+    });
     const getRelatedContentLinks = new GetRelatedContentLinks({
         contentLinkRepo,
     });
@@ -33,6 +40,10 @@ const createContainer = () => {
     const duplicateContentLink = new DuplicateContentLink({
         contentLinkRepo,
     });
+
+    const getByContentLink = new GetLinkEventsByContentLink({
+        linkEventRepo,
+    });
     return {
         getAllContentLinks,
         getRelatedContentLinks,
@@ -40,6 +51,7 @@ const createContainer = () => {
         createContentLink,
         updateContentLink,
         duplicateContentLink,
+        getByContentLink,
     };
 };
 
@@ -57,7 +69,7 @@ const createContext = async ({ req }) => {
 
     const client = {
         agent: req.header('user-agent'),
-        referrer: req.header('referrer'),
+        referrer: req.header('referrer') ?? 'none',
         ip: req.header('x-forwarded-for') || req.connection.remoteAddress,
         clientProxy: req.header('via') || 'none',
     };

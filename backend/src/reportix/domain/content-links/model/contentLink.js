@@ -13,7 +13,6 @@ export class ContentLink extends BaseEntity {
         sourceUrl: string().trim().required(),
         recipient: string().trim().email().required(),
         expireAfter: number().default(-1),
-        redirect: bool().default(false),
         createdAt: number().required(),
         updatedAt: number().required(),
     });
@@ -90,10 +89,6 @@ export class ContentLink extends BaseEntity {
         return new Date(this._props.updatedAt);
     }
 
-    isRedirect() {
-        return this._props.redirect;
-    }
-
     isExpired() {
         const currentDate = new Date().getTime();
         return (
@@ -108,6 +103,7 @@ export class ContentLink extends BaseEntity {
             ...this.toDto(),
             createdAt: this.getCreatedAt(),
             updatedAt: this.getUpdatedAt(),
+            expired: this.isExpired(),
         };
     }
 }

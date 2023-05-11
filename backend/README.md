@@ -8,3 +8,5 @@
 # TODO
 - Add pagination
 - Abstract a general purpose search method
+- Add more tests
+- Integrate tool for automatic documentation

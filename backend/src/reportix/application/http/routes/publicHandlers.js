@@ -2,32 +2,32 @@ import { AuthenticationError } from '../errors.js';
 import { createToken } from '../auth/jwt.js';
 import { UserPrinciple } from '../auth/userPrinciple.js';
 import { Roles } from '../auth/role.js';
+import { ApiError } from '../../../domain/common/service/error.js';
 
 export const handleGetContentLinkById = async (req, res) => {
-    const { container, logger } = res.locals.context;
+    const { container, logger, client } = res.locals.context;
     const { id: linkId } = req.params;
     logger.info({ msg: 'Calling GetContentLinkById', linkId });
     const { getContentLinkById } = container;
-    const contentLink = await getContentLinkById.execute(linkId);
+    const contentLink = await getContentLinkById.execute(linkId, client);
     logger.info({
         msg: 'Successfully called GetContentLinkById',
         contentLink,
     });
 
     if (!contentLink) {
-        res.sendStatus(404);
-    } else if (contentLink.isRedirect()) {
-        res.redirect(contentLink.getSourceUrl());
+        throw new ApiError({ message: 'Link Not Found', statusCode: 404 });
     } else {
         const dto = {
-            ...contentLink.toJSON(),
-            expired: false,
-            moreContent: `/related-content-links?recipient=${Buffer.from(
-                contentLink.getRecipient()
-            ).toString('base64')}`,
+            id: contentLink.getId(),
+            name: contentLink.getName(),
+            expired: contentLink.isExpired(),
+            recipient: Buffer.from(contentLink.getRecipient()).toString(
+                'base64'
+            ),
+            sourceUrl: contentLink.getSourceUrl(),
         };
         if (contentLink.isExpired()) {
-            dto.expired = true;
             dto.sourceUrl = '';
         }
         res.status(200).send(dto);

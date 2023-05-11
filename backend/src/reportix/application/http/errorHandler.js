@@ -36,6 +36,6 @@ export const errorHandler = (logger) => (error, _req, res, _next) => {
         if (!(error instanceof ApiError)) {
             errorObject = new ApiError();
         }
-        res.status(500).send(errorObject);
+        res.status(errorObject.getStatusCode()).send(errorObject);
     }
 };

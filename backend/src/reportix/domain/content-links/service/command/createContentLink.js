@@ -8,7 +8,6 @@ export class CreateContentLink {
         name: string().trim().required(),
         sourceUrl: string().trim().required(),
         recipient: string().trim().email().required(),
-        redirect: bool().default(false),
         expireAfter: number().default(-1),
     });
 

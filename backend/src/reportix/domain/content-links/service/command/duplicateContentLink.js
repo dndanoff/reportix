@@ -4,7 +4,7 @@ import { ApiError } from '../../../common/service/error.js';
 
 export class DuplicateContentLink {
     static #VALIDATION_SCHEMA = object().shape({
-        id: string().trim().required(),
+        id: string().trim().uuid().required(),
         recipient: string().trim().email().required(),
         expireAfter: number().default(-1),
     });

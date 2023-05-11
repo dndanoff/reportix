@@ -5,6 +5,8 @@ import {
     handleGetAllContentLinks,
     handleContentLinkOperation,
     handleUpdateContentLink,
+    handleGetContentLinkById,
+    handleGetContentLinkEvents,
 } from './privateHandlers.js';
 import { config } from '../../../config.js';
 import { corsConfig } from '../cors.js';
@@ -23,6 +25,15 @@ export const createPrivateRouter = () => {
     GET /content-links
     */
     privateRouter.get('/content-links', asyncHandler(handleGetAllContentLinks));
+
+    /*
+    GET /content-links/:id
+    required fields: id
+    */
+    privateRouter.get(
+        '/content-links/:id',
+        asyncHandler(handleGetContentLinkById)
+    );
 
     /*
     POST /content-links
@@ -45,6 +56,15 @@ export const createPrivateRouter = () => {
     privateRouter.post(
         '/content-links/operations',
         asyncHandler(handleContentLinkOperation)
+    );
+
+    /*
+    GET /content-links/:id/events
+    required fields: id
+    */
+    privateRouter.get(
+        '/content-links/:id/events',
+        asyncHandler(handleGetContentLinkEvents)
     );
 
     return privateRouter;

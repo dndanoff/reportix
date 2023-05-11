@@ -1,5 +1,5 @@
 {
-    "root": true,
+    "root": false,
     "parserOptions": {
         "ecmaVersion": 2022,
         "sourceType": "module"

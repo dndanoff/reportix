@@ -3,12 +3,11 @@ import { ContentLink } from '../../model/contentLink.js';
 
 export class UpdateContentLink {
     static #VALIDATION_SCHEMA = object().shape({
-        id: string().trim().required(),
+        id: string().trim().uuid().required(),
         company: string().trim().required(),
         name: string().trim().required(),
         sourceUrl: string().trim().required(),
         recipient: string().trim().email().required(),
-        redirect: bool().default(false),
         expireAfter: number().default(-1),
     });
 

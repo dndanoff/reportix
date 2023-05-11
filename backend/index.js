@@ -15,7 +15,7 @@ const start = async () => {
     app.use(ipFilter(config.web.blockedIps));
     app.use('/api', createPublicRouter());
     app.use('/api/private', createPrivateRouter());
-    app.use(createUiRouter(path.resolve(path.join('..', 'frontend', 'build'))));
+    app.use(createUiRouter(path.resolve(config.web.frontendPath)));
     app.use(errorHandler(logger));
     app.listen({ port: config.web.httpPort }, () => {
         logger.info({

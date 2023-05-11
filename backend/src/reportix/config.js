@@ -5,6 +5,7 @@ const localDefaults = {
     SECRET_KEY: '3fa5dcd4-1d04-40c7-858b-287c150d4cca',
     AWS_REGION: 'local',
     AWS_ENDPOINT: 'http://localhost:8000',
+    WEB_FRONTEND_PATH: '../frontend/dist',
 };
 
 const devDefaults = {
@@ -57,9 +58,9 @@ const env = cleanEnv(
             desc: 'Allowed origins for the private API',
             default: '',
         }),
-        WEB_SERVE_FRONTNED: bool({
-            desc: 'If frontend should be served',
-            default: true,
+        WEB_FRONTEND_PATH: str({
+            desc: 'Path to the static frontend to be served',
+            default: null,
         }),
         AWS_REGION: str({
             desc: 'AWS Region',
@@ -84,7 +85,8 @@ export const config = {
         privateAllowedOrigins: env.WEB_PRIVATE_ALLOWED_ORIGINS.split(
             ','
         ).filter((origin) => origin !== ''),
-        serverFrontend: env.WEB_SERVE_FRONTNED,
+        serveFrontend: !!env.WEB_FRONTEND_PATH,
+        frontendPath: env.WEB_FRONTEND_PATH,
     },
     aws: {
         region: env.AWS_REGION,

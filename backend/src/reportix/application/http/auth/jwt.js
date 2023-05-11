@@ -7,7 +7,7 @@ export const createToken = (principle) =>
 
 export const verifyToken = (token) => {
     try {
-        jsonwebtoken.verify(token, config.secretKey);
+        return jsonwebtoken.verify(token, config.secretKey);
     } catch (err) {
         throw new AuthenticationError('Invalid or expired token');
     }

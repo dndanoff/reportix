@@ -1,3 +1,4 @@
+import { ApiError } from '../../../domain/common/service/error.js';
 import { UnknownOperation } from '../errors.js';
 
 export const handleGetAllContentLinks = async (_req, res) => {
@@ -11,9 +12,25 @@ export const handleGetAllContentLinks = async (_req, res) => {
         allLinks,
     });
 
-    res.status(200).send(
-        allLinks.map((l) => ({ ...l.toJSON(), expired: l.isExpired() }))
-    );
+    res.status(200).send(allLinks.map((l) => l.toJSON()));
+};
+
+export const handleGetContentLinkById = async (req, res) => {
+    const { container, logger } = res.locals.context;
+    const { id: linkId } = req.params;
+    logger.info({ msg: 'Calling GetContentLinkById', linkId });
+    const { getContentLinkById } = container;
+    const contentLink = await getContentLinkById.execute(linkId);
+    logger.info({
+        msg: 'Successfully called GetContentLinkById',
+        contentLink,
+    });
+
+    if (!contentLink) {
+        throw new ApiError({ message: 'Link Not Found', statusCode: 404 });
+    } else {
+        res.status(200).send(contentLink.toJSON());
+    }
 };
 
 export const handleCreateContentLink = async (req, res) => {
@@ -63,4 +80,18 @@ export const handleContentLinkOperation = async (req, res) => {
     } else {
         throw new UnknownOperation(`Unknown operation: ${operation}`);
     }
+};
+
+export const handleGetContentLinkEvents = async (req, res) => {
+    const { container, logger } = res.locals.context;
+    const { id: contentLinkId } = req.params;
+    logger.info({ msg: 'Calling GetContentLinkEvents', contentLinkId });
+    const { getByContentLink } = container;
+    const events = await getByContentLink.execute(contentLinkId);
+    logger.info({
+        msg: 'Successfully called GetContentLinkEvents',
+        events,
+    });
+
+    res.status(200).send(events.map((e) => e.toJSON()));
 };
