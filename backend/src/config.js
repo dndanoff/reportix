@@ -1,11 +1,11 @@
-import { cleanEnv, str, num, bool } from 'envalid';
+import { cleanEnv, str, num } from 'envalid';
 
 const localDefaults = {
     NODE_ENV: 'local',
     SECRET_KEY: '3fa5dcd4-1d04-40c7-858b-287c150d4cca',
     AWS_REGION: 'local',
-    AWS_ENDPOINT: 'http://localhost:8000',
-    WEB_FRONTEND_PATH: '../frontend/dist',
+    AWS_ENDPOINT: 'http://localhost:3002',
+    WEB_FRONTEND_PATH: '../frontend-public/dist',
 };
 
 const devDefaults = {
@@ -44,7 +44,7 @@ const env = cleanEnv(
         SECRET_KEY: str({ desc: 'A secret used for hashing sensitive data' }),
         WEB_HTTP_PORT: num({
             desc: 'Web server port',
-            default: 3001,
+            default: 80,
         }),
         WEB_BLOCKED_IPS: str({
             desc: 'IPs that need to be blocked',

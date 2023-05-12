@@ -17,8 +17,10 @@
         "lint:format": "prettier --write \"**/*.js\"",
         "lint:dep-versions": "ensure-wildcard-free-dependencies",
         "lint:eslint": "eslint \"./src/\" --max-warnings=0",
-        "db:init": "cross-env NODE_ENV=local node scripts/db-init.js",
-        "start": "cross-env NODE_ENV=local nodemon index.js"
+        "db:init": "node scripts/db-init.js",
+        "db:init-local": "cross-env NODE_ENV=local node scripts/db-init.js",
+        "start:watch": "cross-env NODE_ENV=local nodemon index.js",
+        "start": "node index.js"
     },
     "dependencies": {
         "@aws-sdk/client-dynamodb": "3.267.0",

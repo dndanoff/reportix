@@ -14,7 +14,7 @@ export const getContentLink = async ({ contentLinkId }) => {
 
 export const getRelatedContentLinks = async ({ recipient }) => {
     const { data } = await restClient({
-        url: `${config.backend.endpoints.relatedLinks}/?recipient=${recipient}`,
+        url: `${config.backend.endpoints.relatedLinks}?recipient=${recipient}`,
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

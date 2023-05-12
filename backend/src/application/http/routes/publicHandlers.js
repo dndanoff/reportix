@@ -61,7 +61,7 @@ export const handleLogin = async (req, res) => {
     const { logger } = res.locals.context;
     logger.info({ msg: 'Calling Login', params: req.body });
 
-    if (username !== 'admin' && password !== 'admin') {
+    if (username !== 'admin' || password !== 'admin') {
         throw new AuthenticationError();
     }
 

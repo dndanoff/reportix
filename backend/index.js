@@ -1,13 +1,11 @@
-import path from 'path';
 import express from 'express';
 import { IpFilter as ipFilter } from 'express-ipfilter';
 
-import { logger } from './src/reportix/logger.js';
-import { config } from './src/reportix/config.js';
-import { errorHandler } from './src/reportix/application/http/errorHandler.js';
-import { createPublicRouter } from './src/reportix/application/http/routes/public.js';
-import { createPrivateRouter } from './src/reportix/application/http/routes/private.js';
-import { createUiRouter } from './src/reportix/application/http/routes/ui.js';
+import { logger } from './src/logger.js';
+import { config } from './src/config.js';
+import { errorHandler } from './src/application/http/errorHandler.js';
+import { createPublicRouter } from './src/application/http/routes/public.js';
+import { createPrivateRouter } from './src/application/http/routes/private.js';
 
 const start = async () => {
     const app = express();
@@ -15,7 +13,6 @@ const start = async () => {
     app.use(ipFilter(config.web.blockedIps));
     app.use('/api', createPublicRouter());
     app.use('/api/private', createPrivateRouter());
-    app.use(createUiRouter(path.resolve(config.web.frontendPath)));
     app.use(errorHandler(logger));
     app.listen({ port: config.web.httpPort }, () => {
         logger.info({

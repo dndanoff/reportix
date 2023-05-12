@@ -8,8 +8,8 @@ import {
     UnknownOperation,
 } from './errors.js';
 
-export const errorHandler = (logger) => (error, _req, res, _next) => {
-    const msg = `Error during the rest route: ${error.message}`;
+export const errorHandler = (logger) => (error, req, res, _next) => {
+    const msg = `Error during the rest route(${req.url}): ${error.message}`;
 
     if (error instanceof ValidationError) {
         logger.warn({ error, msg, stackTrace: error.stack });

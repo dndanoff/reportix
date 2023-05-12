@@ -13,7 +13,7 @@ export class GetContentLinkById {
     }
 
     async execute(id, metaInfo) {
-        this.#createLinkEventService.execute({
+        await this.#createLinkEventService.execute({
             linkId: id,
             type: EventType.View,
             metaInfo,

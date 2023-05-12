@@ -1,0 +1,50 @@
+version: '3.7'
+name: reportix
+services:
+  dynamodb:
+    image: amazon/dynamodb-local
+    container_name: dynamodb
+    hostname: dynamodb
+    # volumes:
+    # - ./volume/data:/home/dynamodblocal/data
+    ports:
+      - 3002:8000
+    command: [
+        '-jar',
+        'DynamoDBLocal.jar',
+        '-sharedDb',
+        '-inMemory',
+        # '-dbPath',
+        # '/home/dynamodblocal/data/',
+      ]
+  backend:
+    image: reportix-backend:dev
+    build:
+      context: backend
+    container_name: backend
+    hostname: backend
+    ports:
+      - 3001:80
+    environment:
+      - NODE_ENV=local
+      - WEB_HTTP_PORT=80
+      - SECRET_KEY=3fa5dcd4-1d04-40c7-858b-287c150d4cca
+      - AWS_REGION=local
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_ENDPOINT=http://dynamodb:8000
+      - WEB_FRONTEND_PATH
+    depends_on:
+      - dynamodb
+  frontend:
+    image: reportix-frontend-public:dev
+    build:
+      context: frontend-public
+    container_name: frontend
+    hostname: frontend
+    ports:
+      - 3000:80
+    environment:
+      - VITE_BACKEND_URL=http://backend:80
+    depends_on:
+      - backend

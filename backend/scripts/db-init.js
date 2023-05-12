@@ -4,8 +4,8 @@ import {
     ListTablesCommand,
     DeleteTableCommand,
 } from '@aws-sdk/client-dynamodb';
-import { config } from '../src/reportix/config.js';
-import { logger } from '../src/reportix/logger.js';
+import { config } from '../src/config.js';
+import { logger } from '../src/logger.js';
 
 const tableParams = [
     {

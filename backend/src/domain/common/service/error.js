@@ -27,11 +27,9 @@ export class ApiError {
 
     toJSON() {
         return {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            statusCode: this.#statusCode,
-            body: { message: this.#message, details: this.#details },
+            statusCode: this.getStatusCode(),
+            message: this.getMessage(),
+            details: this.getDetails(),
         };
     }
 }
