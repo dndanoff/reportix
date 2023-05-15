@@ -1,11 +1,13 @@
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
-import { ThemeProvider } from './contexts/themeProvider';
+import { StorageProvider, ThemeProvider } from './contexts';
 
 export const App = () => {
     return (
         <ThemeProvider>
-            <RouterProvider router={router} />
+            <StorageProvider>
+                <RouterProvider router={router} />
+            </StorageProvider>
         </ThemeProvider>
     );
 };

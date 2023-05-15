@@ -1,10 +1,11 @@
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import dreamixLogo from '../../../assets/dreamix-logo.svg';
+import dreamixLogo from '../assets/dreamix-logo.svg';
+import { useStorage } from '../contexts/useStorage';
 
-export function NavBar({ recipient }) {
+export function NavBar() {
+    const { storage } = useStorage();
     return (
-        <nav className="navbar navbar-expand-lg">
+        <nav className="navbar navbar-expand-lg mb-10">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="http://dreamix.eu">
                     <img
@@ -30,21 +31,19 @@ export function NavBar({ recipient }) {
                     id="navbarContent"
                 >
                     <ul className="navbar-nav">
-                        <li className="nav-item">
-                            <Link
-                                className="nav-link"
-                                to={`/more?recipient=${recipient}`}
-                            >
-                                Read More
-                            </Link>
-                        </li>
+                        {storage.recipient && (
+                            <li className="nav-item">
+                                <Link
+                                    className="nav-link"
+                                    to={`/more?recipient=${recipient}`}
+                                >
+                                    Read More
+                                </Link>
+                            </li>
+                        )}
                     </ul>
                 </div>
             </div>
         </nav>
     );
 }
-
-NavBar.propTypes = {
-    recipient: PropTypes.string.isRequired,
-};

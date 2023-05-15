@@ -1,22 +1,25 @@
 import { useParams } from 'react-router-dom';
 import { ContentViewer } from './components/contentViewer';
-import { NavBar } from './components/navBar';
-import './index.css';
 import { getContentLink } from '../../rest/requests';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Spinner } from '../../components/spinner';
 import { Error } from '../../components/error';
+import { useStorage } from '../../contexts/useStorage';
 
 export const ContentLinkPage = () => {
     const [contentLink, setContentLink] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const { setStorage } = useStorage();
     const { contentLinkId } = useParams();
 
     useEffect(() => {
         getContentLink({ contentLinkId })
-            .then((res) => setContentLink(res))
+            .then((link) => {
+                setContentLink(link);
+                setStorage({ recipient: link.recipient });
+            })
             .catch((error) => setError(error.message))
             .finally(() => setLoading(false));
     }, [contentLinkId]);
@@ -27,13 +30,10 @@ export const ContentLinkPage = () => {
         return <Spinner />;
     } else {
         return (
-            <div id="content-page" className="vh-100">
-                <NavBar recipient={contentLink.recipient} />
-                <ContentViewer
-                    sourceUrl={contentLink.sourceUrl}
-                    name={contentLink.name}
-                />
-            </div>
+            <ContentViewer
+                sourceUrl={contentLink.sourceUrl}
+                name={contentLink.name}
+            />
         );
     }
 };

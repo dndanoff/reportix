@@ -1,0 +1,9 @@
+#content-page {
+    height: 85vh;
+}
+
+@media print {
+    #content-page iframe {
+        display: none;
+    }
+}
