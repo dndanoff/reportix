@@ -1,0 +1,160 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Transform": "AWS::Serverless-2016-10-31",
+    "Resources": {
+        "HelloWorldFunction": {
+            "Type": "AWS::Serverless::Function",
+            "Properties": {
+                "CodeUri": "hello_world/",
+                "Handler": "index.handler",
+                "Runtime": "nodejs18.x",
+                "Events": {
+                    "FrontendEvent": {
+                        "Type": "HttpApi",
+                        "Properties": {
+                            "ApiId": { "Ref": "DEFAULT_HTTP_API" },
+                            "Path": "/{proxy+}",
+                            "Method": "get"
+                        }
+                    },
+                    "BackendEvent": {
+                        "Type": "HttpApi",
+                        "Properties": {
+                            "ApiId": { "Ref": "DEFAULT_HTTP_API" },
+                            "Path": "/api/{proxy+}",
+                            "Method": "any"
+                        }
+                    }
+                }
+            },
+            "Policies": [
+                {
+                    "DynamoDBCrudPolicy": {
+                        "TableName": { "Ref": "LINK_EVENTS_DB_TABLE" }
+                    }
+                },
+                {
+                    "DynamoDBCrudPolicy": {
+                        "TableName": { "Ref": "CONTENT_LINKS_DB_TABLE" }
+                    }
+                }
+            ]
+        },
+        "DEFAULT_HTTP_API": {
+            "Type": "AWS::Serverless::HttpApi",
+            "Properties": {
+                "StageName": "default"
+            }
+        },
+        "CONTENT_LINKS_DB_TABLE": {
+            "TableName": "CONTENT_LINKS",
+            "Projection": {
+                "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+                "ReadCapacityUnits": 5,
+                "WriteCapacityUnits": 5
+            },
+            "StreamSpecification": {
+                "StreamEnabled": false
+            },
+            "KeySchema": [
+                {
+                    "AttributeName": "id",
+                    "KeyType": "HASH"
+                }
+            ],
+            "AttributeDefinitions": [
+                {
+                    "AttributeName": "id",
+                    "AttributeType": "S"
+                },
+                {
+                    "AttributeName": "recipient",
+                    "AttributeType": "S"
+                },
+                {
+                    "AttributeName": "company",
+                    "AttributeType": "S"
+                }
+            ],
+            "GlobalSecondaryIndexes": [
+                {
+                    "IndexName": "RecipientAndCompanyIndex",
+                    "Projection": {
+                        "ProjectionType": "ALL"
+                    },
+                    "ProvisionedThroughput": {
+                        "ReadCapacityUnits": 1,
+                        "WriteCapacityUnits": 1
+                    },
+                    "KeySchema": [
+                        {
+                            "AttributeName": "recipient",
+                            "KeyType": "HASH"
+                        },
+                        {
+                            "AttributeName": "company",
+                            "KeyType": "RANGE"
+                        }
+                    ]
+                }
+            ]
+        },
+        "LINK_EVENTS_DB_TABLE": {
+            "TableName": "LINK_EVENTS",
+            "Projection": {
+                "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+                "ReadCapacityUnits": 5,
+                "WriteCapacityUnits": 5
+            },
+            "StreamSpecification": {
+                "StreamEnabled": false
+            },
+            "KeySchema": [
+                {
+                    "AttributeName": "id",
+                    "KeyType": "HASH"
+                }
+            ],
+            "AttributeDefinitions": [
+                {
+                    "AttributeName": "id",
+                    "AttributeType": "S"
+                },
+                {
+                    "AttributeName": "linkId",
+                    "AttributeType": "S"
+                },
+                {
+                    "AttributeName": "type",
+                    "AttributeType": "S"
+                }
+            ],
+            "GlobalSecondaryIndexes": [
+                {
+                    "IndexName": "LinkIdIndex",
+                    "Projection": {
+                        "ProjectionType": "ALL"
+                    },
+                    "ProvisionedThroughput": {
+                        "ReadCapacityUnits": 1,
+                        "WriteCapacityUnits": 1
+                    },
+                    "KeySchema": [
+                        {
+                            "AttributeName": "linkId",
+                            "KeyType": "HASH"
+                        },
+                        {
+                            "AttributeName": "type",
+                            "KeyType": "RANGE"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
