@@ -1,5 +1,17 @@
 import { cleanEnv, str, num } from 'envalid';
 
+const nodeEnvs = {
+    local: 'local',
+    dev: 'dev',
+    qa: 'qa',
+    prod: 'prod',
+};
+
+const infraEnvs = {
+    server: 'server',
+    serverless: 'serverless',
+};
+
 const localDefaults = {
     NODE_ENV: 'local',
     SECRET_KEY: '3fa5dcd4-1d04-40c7-858b-287c150d4cca',
@@ -37,6 +49,11 @@ const env = cleanEnv(
         NODE_ENV: str({
             desc: 'NODE_ENV is used by various libraries. We use only the standard values.',
         }),
+        INFRA_ENV: str({
+            desc: 'The type of environemnt that the application is running on',
+            choices: Object.values(infraEnvs),
+            default: 'server',
+        }),
         LOG_LEVEL: str({
             desc: 'Logger level.',
             default: 'info',
@@ -72,8 +89,9 @@ const env = cleanEnv(
     }
 );
 
-export const config = {
+const config = {
     nodeEnv: env.NODE_ENV,
+    infraEnv: env.INFRA_ENV,
     loggerLevel: env.LOG_LEVEL,
     secretKey: env.SECRET_KEY,
     web: {
@@ -94,9 +112,4 @@ export const config = {
     },
 };
 
-export const nodeEnvs = {
-    local: 'local',
-    dev: 'dev',
-    qa: 'qa',
-    prod: 'prod',
-};
+export { nodeEnvs, infraEnvs, config };
